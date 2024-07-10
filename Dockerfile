@@ -13,7 +13,7 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run
 FROM openjdk:17-jdk-slim
 RUN apt-get update && \
-    apt-get install -y tesseract-ocr=3.4.8 && \
+    apt-get install -y tesseract-ocr=3.4.8-0ubuntu0.18.04.2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
