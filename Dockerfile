@@ -20,9 +20,9 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy the built application from the build stage
-COPY --from=build /app/target/your-spring-boot-app.jar .
+COPY --from=build /app/target/ImageToTextApplication.jar .
 # Copy the tessdata directory from the build stage
 COPY --from=build /app/tessdata ./tessdata
 
 EXPOSE 8080
-CMD ["java", "-jar", "your-spring-boot-app.jar"]
+CMD ["java", "-jar", "ImageToTextApplication.jar"]
