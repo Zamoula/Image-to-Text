@@ -1,27 +1,28 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-slim
-
-# Install Tesseract OCR and other dependencies
-RUN apt-get update && \
-    apt-get install -y tesseract-ocr && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-# Set the working directory
+# Stage 1: Build
+FROM maven:3.8.5-openjdk-17-slim AS build
 WORKDIR /app
 
 # Copy the Maven project files
 COPY pom.xml .
 COPY src ./src
-
-# Copy tessdata files into the container
 COPY tessdata ./tessdata
 
 # Build the Spring Boot application
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
-# Expose the port the application runs on
+# Stage 2: Run
+FROM openjdk:17-jdk-slim
+RUN apt-get update && \
+    apt-get install -y tesseract-ocr && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy the built application from the build stage
+COPY --from=build /app/target/your-spring-boot-app.jar .
+# Copy the tessdata directory from the build stage
+COPY --from=build /app/tessdata ./tessdata
+
 EXPOSE 8080
-
-# Run the Spring Boot application
-CMD ["java", "-jar", "target/your-spring-boot-app.jar"]
+CMD ["java", "-jar", "your-spring-boot-app.jar"]
