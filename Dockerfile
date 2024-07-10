@@ -20,9 +20,9 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy the built application from the build stage
-COPY --from=build /app/target/ImageToTextApplication.jar .
+COPY --from=build /app/target/image-to-text-0.0.1-SNAPSHOT.jar .
 # Copy the tessdata directory from the build stage
 COPY --from=build /app/tessdata ./tessdata
 
 EXPOSE 8080
-CMD ["java", "-jar", "ImageToTextApplication.jar"]
+CMD ["java", "-jar", "image-to-text-0.0.1-SNAPSHOT.jar"]
