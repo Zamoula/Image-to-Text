@@ -33,7 +33,7 @@ RUN mkdir -p /usr/share/tessdata
 RUN wget -P /usr/share/tessdata https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata
 
 # Set the TESSDATA_PREFIX environment variable
-ENV TESSDATA_PREFIX=/usr/share/tessdata
+ENV TESSDATA_PREFIX=/usr/share/tessdata/eng.traineddata
 
 # Expose the port the app runs on
 EXPOSE 8080
