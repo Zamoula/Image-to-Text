@@ -37,7 +37,7 @@ button {
     border-radius: 10px;
     cursor: pointer;
 }
-#txt {
+#resultContainer {
     border-top: 1px solid black;
     padding: 25px;
 }

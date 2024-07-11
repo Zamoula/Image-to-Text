@@ -10,11 +10,12 @@
     <div class="card">
         <h2>Image to Text</h2>
         <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" name="file" accept="image/*" required><br>
+            <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png" required><br>
             <button id="btn" type="submit">Extract text</button>
         </form><br><br>
-        <div id="txt">
-            fef
+        <div id="resultContainer">
+            <h2>Extracted Text:</h2>
+            <p id="extractedText"></p>
         </div>
     </div>
     <script src="script.js"></script>

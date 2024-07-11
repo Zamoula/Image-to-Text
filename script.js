@@ -1,38 +1,29 @@
 const btn = document.getElementById('btn');
 
-btn.addEventListener('click' , (e) => {
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
+const form = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('fileInput');
+        const resultContainer = document.getElementById('extractedText');
 
-    if (!file) {
-        alert('Please select a file.');
-        return;
-    }
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('file', file);
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
 
-    fetch('https://image-to-text-gzq3.onrender.com/api/ocr', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text) });
-        }
-        const t = document.getElementById('txt');
-        t.innerHTML(response);
-        return response.json();
-    })
-    .then(data => {
-        console.log('Success:', data);
-        alert('File uploaded successfully!');
-    })
-    .catch(error => {
-        console.error('Error:', error.message);
-        alert(error.message);
-    });
-});
+            try {
+                const response = await fetch('https://image-to-text-gzq3.onrender.com/api/ocr', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to upload image');
+                }
+
+                const result = await response.text();
+                resultContainer.textContent = result;
+            } catch (error) {
+                console.error('Error:', error);
+                resultContainer.textContent = 'Error uploading image.';
+            }
+        });
