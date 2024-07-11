@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /usr/share/tessdata
 
 # Download the language data file
-RUN wget -P /usr/share/tessdata https://github.com/tesseract-ocr/tessdata/raw/master/eng.traineddata
+RUN wget -P /usr/share/tessdata https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata
 
 # Set the TESSDATA_PREFIX environment variable
 ENV TESSDATA_PREFIX=/usr/share/
