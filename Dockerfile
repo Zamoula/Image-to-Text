@@ -21,8 +21,8 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar image-to-text-0.0.1-SNAPSHOT.jar
 
 # Install Tesseract and wget
-RUN apt-get update && apt-get install -y \
-    tesseract-ocr \
+RUN apt-get update && \
+    apt-get -qq -y install tesseract-ocr && \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
