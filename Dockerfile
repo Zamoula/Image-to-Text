@@ -20,14 +20,17 @@ WORKDIR /app
 # Copy the jar file from the build stage
 COPY --from=build /app/target/*.jar image-to-text-0.0.1-SNAPSHOT.jar
 
-
-# Install Tesseract and download the language data files
+# Install Tesseract and wget
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     wget \
-    && mkdir -p /usr/share/tessdata \
-    && wget -P /usr/share/tessdata https://github.com/tesseract-ocr/tessdata/raw/master/eng.traineddata \
     && rm -rf /var/lib/apt/lists/*
+
+# Create the tessdata directory
+RUN mkdir -p /usr/share/tessdata
+
+# Download the language data file
+RUN wget -P /usr/share/tessdata https://github.com/tesseract-ocr/tessdata/raw/master/eng.traineddata
 
 # Set the TESSDATA_PREFIX environment variable
 ENV TESSDATA_PREFIX=/usr/share/
