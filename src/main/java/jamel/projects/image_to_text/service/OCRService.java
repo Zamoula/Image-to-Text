@@ -15,7 +15,7 @@ public class OCRService {
 
         // Initialize OCR engine
         Tesseract tesseract = new Tesseract();
-        tesseract.setDatapath("/app/tessdata");
+        tesseract.setDatapath("/usr/share/tessdata");
 
         // Process the image
         BufferedImage image = ImageIO.read(imageFile.getInputStream());
