@@ -20,10 +20,17 @@ WORKDIR /app
 # Copy the jar file from the build stage
 COPY --from=build /app/target/*.jar image-to-text-0.0.1-SNAPSHOT.jar
 
-# Install Tesseract
+
+# Install Tesseract and download the language data files
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
+    wget \
+    && mkdir -p /usr/share/tessdata \
+    && wget -P /usr/share/tessdata https://github.com/tesseract-ocr/tessdata/raw/master/eng.traineddata \
     && rm -rf /var/lib/apt/lists/*
+
+# Set the TESSDATA_PREFIX environment variable
+ENV TESSDATA_PREFIX=/usr/share/
 
 # Expose the port the app runs on
 EXPOSE 8080
