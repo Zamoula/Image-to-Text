@@ -1,37 +1,32 @@
-# Stage 1: Build
-FROM maven:3.8.5-openjdk-17-slim AS build
+# Use an official Maven image to build the app
+FROM maven:3.8.5-openjdk-17 AS build
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven project files
+# Copy the pom.xml and the source code into the container
 COPY pom.xml .
 COPY src ./src
-COPY tessdata ./tessdata
 
-# Build the Spring Boot application
+# Build the application
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run
+# Use an official OpenJDK runtime as a parent image
 FROM openjdk:17-jdk-slim
-RUN apt-get update && \
-    apt-get install -y tesseract-ocr=3.4.8-0ubuntu0.18.04.2 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
-# Verify the tessdata directory and language files
-RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata && \
-    apt-get install -y wget && \
-    wget -P /usr/share/tesseract-ocr/4.00/tessdata/ https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
-
-
-# Set Tesseract environment variables
-ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00
-
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the built application from the build stage
-COPY --from=build /app/target/image-to-text-0.0.1-SNAPSHOT.jar .
-# Copy the tessdata directory from the build stage
-COPY --from=build /app/tessdata ./tessdata
+# Copy the jar file from the build stage
+COPY --from=build /app/target/*.jar image-to-text-0.0.1-SNAPSHOT.jar
 
+# Install Tesseract
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr=3.04.01-6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Expose the port the app runs on
 EXPOSE 8080
-CMD ["java", "-jar", "image-to-text-0.0.1-SNAPSHOT.jar"]
+
+# Run the application
+ENTRYPOINT ["java","-jar","image-to-text-0.0.1-SNAPSHOT.jar"]
