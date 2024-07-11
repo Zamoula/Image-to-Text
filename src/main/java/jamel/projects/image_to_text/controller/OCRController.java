@@ -19,12 +19,8 @@ public class OCRController {
     private OCRService ocrService;
 
     @PostMapping()
-    public ResponseEntity<String> extractTextFromImage(@RequestParam("file") MultipartFile imageFile) {
-        try {
+    public ResponseEntity<String> extractTextFromImage(@RequestParam("file") MultipartFile imageFile) throws IOException , TesseractException {
             String extractedText = ocrService.extractTextFromImage(imageFile);
             return ResponseEntity.ok(extractedText);
-        } catch (IOException | TesseractException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process image: " + e.getMessage());
-        }
     }
 }

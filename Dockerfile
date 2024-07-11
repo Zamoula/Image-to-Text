@@ -13,12 +13,18 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run
 FROM openjdk:17-jdk-slim
 RUN apt-get update && \
-    apt-get install -y tesseract-ocr && \
+    apt-get install -y tesseract-ocr=3.4.8-0ubuntu0.18.04.2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Verify the tessdata directory and language files
+RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata && \
+    apt-get install -y wget && \
+    wget -P /usr/share/tesseract-ocr/4.00/tessdata/ https://github.com/tesseract-ocr/tessdata/raw/main/eng.traineddata
+
+
 # Set Tesseract environment variables
-ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00/tessdata
+ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00
 
 WORKDIR /app
 
