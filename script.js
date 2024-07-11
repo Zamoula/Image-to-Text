@@ -33,6 +33,6 @@ btn.addEventListener('click' , (e) => {
     })
     .catch(error => {
         console.error('Error:', error.message);
-        alert('File upload failed!');
+        alert(error.message);
     });
 });
