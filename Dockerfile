@@ -20,11 +20,21 @@ WORKDIR /app
 # Copy the jar file from the build stage
 COPY --from=build /app/target/*.jar image-to-text-0.0.1-SNAPSHOT.jar
 
-# Install Tesseract and wget
-RUN apt-get update && \
-    apt-get -qq -y install tesseract-ocr && \
-    wget \
+# Install Tesseract dependencies
+RUN apt-get update && apt-get install -y \
+    libleptonica-dev \
+    pkg-config \
+    libpng-dev \
+    libjpeg8-dev \
+    libtiff5-dev \
+    zlib1g-dev \
+    libicu-dev \
+    libpango1.0-dev \
+    libcairo2-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Tesseract
+RUN apt-get update && apt-get install -y tesseract-ocr
 
 # Create the tessdata directory
 RUN mkdir -p /usr/share/tessdata
