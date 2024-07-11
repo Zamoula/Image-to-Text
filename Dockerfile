@@ -22,7 +22,7 @@ COPY --from=build /app/target/*.jar image-to-text-0.0.1-SNAPSHOT.jar
 
 # Install Tesseract
 RUN apt-get update && apt-get install -y \
-    tesseract-ocr=3.04.01-6 \
+    tesseract-ocr \
     && rm -rf /var/lib/apt/lists/*
 
 # Expose the port the app runs on
