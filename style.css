@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+body {
+    background-image: url('bg.png');
+    background-size: cover;
+    background-repeat:repeat;
+    background-position: top right;
+    background-size: 100px 100px;
+    height: 100vh;
+}
+.card {
+    background-color: white;
+    width: 300px;
+    height: 400px;
+    padding: 20px;
+    border-radius: 10px;
+}
+body , .card , form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+form {
+    margin-top: 25px;
+}
+button {
+    padding: 15px;
+    background-color: #37B7C3;
+    color: whitesmoke;
+    font-size: 18px;
+    border: 0px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#txt {
+    border-top: 1px solid black;
+    padding: 25px;
+}
