@@ -10,6 +10,8 @@ const form = document.getElementById('uploadForm');
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
+            loader.style.display = 'block';
+
             try {
                 const response = await fetch('https://image-to-text-gzq3.onrender.com/api/ocr', {
                     method: 'POST',
@@ -25,5 +27,7 @@ const form = document.getElementById('uploadForm');
             } catch (error) {
                 console.error('Error:', error);
                 resultContainer.textContent = 'Error uploading image.';
+            } finally {
+                loader.style.display = 'none';
             }
         });
